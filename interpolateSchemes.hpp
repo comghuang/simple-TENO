@@ -83,7 +83,7 @@ real Teno5_SZ(std::array<real,5> q)
             + 1.0/4.0*std::pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2)};
 
     unsigned short minBeta=std::min_element(beta.begin(),beta.end())-beta.begin();
-    constexpr real CT=pow(1.5 * 1e-5, 1.0 / 6.0)
+    constexpr real CT=std::pow(1.5 * 1e-5, 1.0 / 6.0)
     //constexpr real CT=0.15704178024750198;      //C_T=1e-5
     //constexpr real CT=0.10699131939336631;      //C_T=1e-6
     //constexpr real CT=0.072892337360747711;     //C_T=1e-7

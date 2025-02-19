@@ -1,23 +1,23 @@
 #define real double
 #include <array>
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
 real Teno5_Z(std::array<real,5> q)
 {
     real eps=1e-40;
     std::array<real,3> beta;
-    beta[0]= 1.0/1.0 *pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
-            + 1.0/4.0 *pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2);
+    beta[0]= 1.0/1.0 *std::pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
+            + 1.0/4.0 *std::pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2);
 
-    beta[1]= 1.0/1.0  *pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
-            + 1.0/4.0 *pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2);
+    beta[1]= 1.0/1.0  *std::pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
+            + 1.0/4.0 *std::pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2);
 
-    beta[2]= 1.0/1.0 *pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
-            + 1.0/4.0*pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2);
+    beta[2]= 1.0/1.0 *std::pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
+            + 1.0/4.0*std::pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2);
 
     real sumbeta=0;
-    real C=1,qq=6,tau=abs(beta[2]-beta[0]);
+    real C=1,qq=6,tau=std::abs(beta[2]-beta[0]);
     for(int i=0;i<3;i++)
     {
         real tempp=C+tau/(beta[i]+eps);
@@ -70,24 +70,26 @@ real Teno5_Z(std::array<real,5> q)
 
 real Teno5_SZ(std::array<real,5> q)
 {
+    //simple TENO
     real eps=1e-40;//1e-10;
     std::array<real,3> beta={
-    1.0/1.0 *pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
-            + 1.0/4.0 *pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2),
+    1.0/1.0 *std::pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
+            + 1.0/4.0 *std::pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2),
 
-    1.0/1.0  *pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
-            + 1.0/4.0 *pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2),
+    1.0/1.0  *std::pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
+            + 1.0/4.0 *std::pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2),
 
-    1.0/1.0 *pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
-            + 1.0/4.0*pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2)};
+    1.0/1.0 *std::pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
+            + 1.0/4.0*std::pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2)};
 
     unsigned short minBeta=std::min_element(beta.begin(),beta.end())-beta.begin();
-    constexpr real CT=0.15704178024750198;        //C_T=1e-5
+    constexpr real CT=pow(1.5 * 1e-5, 1.0 / 6.0)
+    //constexpr real CT=0.15704178024750198;      //C_T=1e-5
     //constexpr real CT=0.10699131939336631;      //C_T=1e-6
     //constexpr real CT=0.072892337360747711;     //C_T=1e-7
     //constexpr real CT=0.033833625914958219;     //C_T=1e-9
     constexpr real CT_1=1-CT;
-    real tau=abs(beta[2]-beta[0]);
+    real tau=std::abs(beta[2]-beta[0]);
     real rr=CT*tau-CT_1*beta[minBeta];
     real ll=tau*beta[minBeta];
 
@@ -137,14 +139,14 @@ real weno5_JS(std::array<real,5> q)
     real eps=1e-6;
     std::array<real,3> gamma={1.0/16.0,5.0/8.0,5.0/16.0};
     std::array<real,3> beta;
-    beta[0]= 1.0/1.0 *pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
-            + 1.0/4.0 *pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2);
+    beta[0]= 1.0/1.0 *std::pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
+            + 1.0/4.0 *std::pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2);
 
-    beta[1]= 1.0/1.0  *pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
-            + 1.0/4.0 *pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2);
+    beta[1]= 1.0/1.0  *std::pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
+            + 1.0/4.0 *std::pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2);
 
-    beta[2]= 1.0/1.0 *pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
-            + 1.0/4.0*pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2);
+    beta[2]= 1.0/1.0 *std::pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
+            + 1.0/4.0*std::pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2);
 
 
     std::array<real,3> u;
@@ -155,7 +157,7 @@ real weno5_JS(std::array<real,5> q)
     real sumbeta=0,result=0;
     for(int i=0;i<3;i++)
     {
-        beta[i]=gamma[i]/pow(eps+beta[i],2);
+        beta[i]=gamma[i]/std::pow(eps+beta[i],2);
         sumbeta+=beta[i];
     }
     for(int i=0;i<3;i++) result+=beta[i]*u[i];
@@ -167,14 +169,14 @@ real weno5_Z(std::array<real,5> q)
     real eps=1e-40;
     std::array<real,3> gamma={1.0/16.0,5.0/8.0,5.0/16.0};
     std::array<real,3> beta;
-    beta[0]= 1.0/1.0 *pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
-            + 1.0/4.0 *pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2);
+    beta[0]= 1.0/1.0 *std::pow(1.0*q[0]-2.0*q[1]+1.0*q[2],2)
+            + 1.0/4.0 *std::pow(1.0*q[0]-4.0*q[1]+3.0*q[2],2);
 
-    beta[1]= 1.0/1.0  *pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
-            + 1.0/4.0 *pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2);
+    beta[1]= 1.0/1.0  *std::pow(1.0*q[1]-2.0*q[2]+1.0*q[3],2)
+            + 1.0/4.0 *std::pow(1.0*q[1]+0.0*q[2]-1.0*q[3],2);
 
-    beta[2]= 1.0/1.0 *pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
-            + 1.0/4.0*pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2);
+    beta[2]= 1.0/1.0 *std::pow(1.0*q[2]-2.0*q[3]+1.0*q[4],2)
+            + 1.0/4.0*std::pow(3.0*q[2]-4.0*q[3]+1.0*q[4],2);
 
     std::array<real,3> u;
     u[0]= 3.0/8.0*q[0]-5.0/4.0*q[1]+15.0/8.0*q[2];
@@ -182,10 +184,10 @@ real weno5_Z(std::array<real,5> q)
     u[2]= 3.0/8.0*q[2]+3.0/4.0*q[3]-1.0 /8.0*q[4];
     
     real sumbeta=0,result=0;
-    real C=1,qq=2,tau=abs(beta[2]-beta[0]);
+    real C=1,qq=2,tau=std::abs(beta[2]-beta[0]);
     for(int i=0;i<3;i++)
     {
-        beta[i]=gamma[i]*(C+pow(tau/(beta[i]+eps),qq));
+        beta[i]=gamma[i]*(C+std::pow(tau/(beta[i]+eps),qq));
         sumbeta+=beta[i];
     }
     for(int i=0;i<3;i++) result+=beta[i]*u[i];
